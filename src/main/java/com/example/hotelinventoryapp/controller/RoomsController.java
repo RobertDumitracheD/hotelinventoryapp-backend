@@ -14,7 +14,6 @@ import java.util.Map;
 @RequestMapping("/hotelinventory/all")
 public class RoomsController {
 
-
     private final RoomsService roomsSerivce;
 
     public RoomsController(RoomsService roomsService) {
