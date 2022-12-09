@@ -1,11 +1,11 @@
 package com.example.hotelinventoryapp.persistance;
 
 import org.jooq.DSLContext;
+import org.jooq.Result;
 import org.jooq.SQLDialect;
-import org.jooq.SelectConditionStep;
 import org.jooq.impl.DSL;
-import org.jooq.sources.tables.Rooms;
-import org.jooq.sources.tables.records.RoomsRecord;
+import org.jooq.sources.tables.Admins;
+import org.jooq.sources.tables.records.AdminsRecord;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
@@ -14,15 +14,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import static org.jooq.sources.tables.Admins.ADMINS;
 import static org.jooq.sources.tables.Rooms.ROOMS;
 
 @Repository
-public class RoomsDAO {
+public class HotelDAO {
 
 
     DSLContext dslContext = DSL.using(createConnection(), SQLDialect.MYSQL);
 
-    public RoomsDAO() throws SQLException {
+    public HotelDAO() throws SQLException {
     }
 
     public List<Map<String, Object>> getRooms() {
@@ -59,6 +60,11 @@ public class RoomsDAO {
 
     public void deleteRoom(int roomNumber) {
         dslContext.deleteFrom(ROOMS).where(ROOMS.ROOMNUMBER.eq(roomNumber)).execute();
+    }
+
+    public  List<Map<String, Object>> login(String username, String password) {
+        List<Map<String, Object>> maps = dslContext.selectFrom(ADMINS).where(ADMINS.USERNAME.eq(username)).and(ADMINS.ADMIN_PASSWORD.eq(password)).fetchMaps();
+        return maps;
     }
 
     private Connection createConnection() throws SQLException {
